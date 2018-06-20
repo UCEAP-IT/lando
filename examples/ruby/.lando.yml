@@ -12,7 +12,7 @@ services:
   # Create a ruby instance
   appserver:
 
-    # Ruby version 6.10
+    # Ruby version 2.4
     type: ruby:2.4
 
     # Optionally create certs in /certs that can be used by your application
@@ -38,12 +38,12 @@ services:
     command: ruby /app/server.rb
 
     # Install some extra server packages
-    # extras:
+    # run_as_root:
     #  - "apt-get update -y"
     #  - "apt-get install vim -y"
 
     # Print a message just to demonstrate this
-    # build:
+    # run:
     # - "cd $LANDO_MOUNT & echo 'Holla!'"
 
 # Add some nice command routing

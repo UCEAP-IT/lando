@@ -1,7 +1,7 @@
 Working with WordPress
 ======================
 
-Lando offers a [configurable recipe](./../recipes/wordpress.md) for spinning up [WordPress](https://wordpress.org/) apps. Let's go over some basic usage.
+Lando offers a configurable recipe for spinning up [WordPress](https://wordpress.org/) apps. Let's go over some basic usage.
 
 <!-- toc -->
 
@@ -25,7 +25,7 @@ lando init
 
 # Commit the .lando.yml to your git repo (Optional but recommended)
 git add -A
-git commit -m "MAKE LOCAL DEV GREAT AGAIN"
+git commit -m "Adding Lando configuration file for easy and fun local development!"
 git push
 ```
 
@@ -89,7 +89,7 @@ lando wp                       Run wp-cli commands
 
 ```bash
 # Search-replace the domain name
-wp search-replace 'some.old.domain' 'mysite.lndo.site'
+lando wp search-replace 'some.old.domain' 'mysite.lndo.site'
 
 # Run composer install
 lando composer install
@@ -116,17 +116,17 @@ You will need to rebuild your app with `lando rebuild` to apply the changes to t
 
 ### Environment Variables
 
-Lando will add some helpful environment variables into your `appserver` so you can get database credential information. These are in addition to the [default variables](./../config/services.md#environment) that we inject into every container. These are accessible via `php`'s [`getenv()`](http://php.net/manual/en/function.getenv.php) function.
+The below are in addition to the [default variables](./../config/services.md#environment) that we inject into every container. These are accessible via `php`'s [`getenv()`](http://php.net/manual/en/function.getenv.php) function.
+
 
 ```bash
-DB_HOST=database
-DB_USER=wordpress
-DB_PASSWORD=wordpress
-DB_NAME=wordpress
-DB_PORT=3306
+# The below is a specific example to ILLUSTRATE the KINDS of things provided by this variable
+# The content of your variable may differ
+LANDO_INFO={"appserver":{"type":"php","version":"7.1","hostnames":["appserver"],"via":"nginx","webroot":"web","config":{"server":"/Users/pirog/.lando/services/config/wordpress/wordpress.conf","conf":"/Users/pirog/.lando/services/config/wordpress/php.ini"}},"nginx":{"type":"nginx","version":"1.13","hostnames":["nginx"],"webroot":"web","config":{"server":"/Users/pirog/.lando/services/config/wordpress/wordpress.conf","conf":"/Users/pirog/.lando/services/config/wordpress/php.ini"}},"database":{"type":"mysql","version":"5.7","hostnames":["database"],"creds":{"user":"wordpress","password":"wordpress","database":"wordpress"},"internal_connection":{"host":"database","port":3306},"external_connection":{"host":"localhost","port":true},"config":{"confd":"/Users/pirog/.lando/services/config/wordpress/mysql"}}}
 ```
 
-These are in addition to the [default variables](./../config/services.md#environment) that we inject into every container. Note that these can vary based on the choices you make in your recipe config.
+**NOTE:** These can vary based on the choices you make in your recipe config.
+**NOTE:** See [this tutorial](./../tutorials/lando-info.md) for more information on how to properly use `$LANDO_INFO`.
 
 ### Automation
 
@@ -168,6 +168,6 @@ Read More
 *   [Adding additional routes](http://docs.devwithlando.io/config/proxy.html)
 *   [Adding additional events](http://docs.devwithlando.io/config/events.html)
 *   [Setting up front end tooling](http://docs.devwithlando.io/tutorials/frontend.html)
-*   [Accessing services (eg your database) from the host](http://docs.devwithlando.io/tutorials/frontend.html)
+*   [Accessing services (eg your database) from the host](http://docs.devwithlando.io/tutorials/external-access.html)
 *   [Importing SQL databases](http://docs.devwithlando.io/tutorials/db-import.html)
 *   [Exporting SQL databases](http://docs.devwithlando.io/tutorials/db-export.html)

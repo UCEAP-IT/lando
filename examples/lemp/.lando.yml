@@ -1,4 +1,4 @@
-# LAMP stack example
+# LEMP stack example
 name: lemp
 
 # Give me http://lemp.lndo.site and https://lemp.lndo.site
@@ -55,7 +55,7 @@ services:
 
     # Optionally run the following commands after the service is started
     # Runs composer install but dont fail on an error
-    build:
+    run:
       - "cd $LANDO_MOUNT && composer install || true"
 
   # Add in the latest mariadb

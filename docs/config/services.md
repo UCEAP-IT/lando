@@ -13,6 +13,7 @@ Supported Services
 The following services are currently supported. Please check out each one to learn how to use them.
 
 *   ####[apache](./../services/apache.md)
+*   ####[compose](./../services/compose.md)
 *   ####[dotnet](./../services/dotnet.md)
 *   ####[elasticsearch](./../services/elasticsearch.md)
 *   ####[go](./../services/go.md)
@@ -31,4 +32,5 @@ The following services are currently supported. Please check out each one to lea
 *   ####[redis](./../services/redis.md)
 *   ####[ruby](./../services/ruby.md)
 *   ####[solr](./../services/solr.md)
+*   ####[tomcat](./../services/tomcat.md)
 *   ####[varnish](./../services/varnish.md)

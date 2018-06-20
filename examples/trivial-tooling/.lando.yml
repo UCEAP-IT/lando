@@ -13,7 +13,7 @@ services:
     via: nginx
     webroot: www
     # Run composer install after we start our app
-    build:
+    run:
       - "cd $LANDO_MOUNT && composer install"
     # Add in a helper script to showcase some magic below
     overrides:
@@ -77,8 +77,8 @@ tooling:
 
   # Define a tooling command with a stringed command
   test:
-    service: cli
-    cmd: npm test:code & npm test:unit
+    service: appserver
+    cmd: composer test
     description: Run our tests
 
   # Define `lando word` that passes through to a script that can handle options.
@@ -128,3 +128,27 @@ tooling:
     # command to function properly
     needs:
       - database
+
+  # Define `lando dynamic` so that it can run on different services based on
+  # the `--service` flag instead of a hardcoded option
+  #
+  # This is useful for complex commands that can act on multiple services eg
+  # a database-import, or drush status check, or pull from a hosting provider
+  # like pantheon
+  dynamic:
+
+    # Just print the hostname so we know what service we are on
+    cmd: printenv LANDO_SERVICE_NAME
+
+    # The format :NAME will use the service specified by the NAME flag
+    # You likely will want to specify the option below and set a reasonable
+    # default
+    service: :service
+
+    # Specify a service option to handle the above
+    options:
+      service:
+        default: appserver
+        alias:
+          - s
+        describe: Run a different service

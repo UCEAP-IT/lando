@@ -25,9 +25,7 @@ $inno_bin = "C:\Program Files (x86)\Inno Setup 5\ISCC.exe"
 # Lando version information
 $lando_pkg = Get-Content "package.json" | Out-String | ConvertFrom-Json
 $lando_version = $lando_pkg.version
-
-# Git version information
-$git_version ="2.7.0"
+$docker_version = "17513"
 
 # Unzip helper
 function Unzip($file, $destination)
@@ -56,6 +54,7 @@ function InstallExe($file)
 # Download helper
 function Download($url, $destination)
 {
+  [Net.ServicePointManager]::SecurityProtocol = 'Ssl3, Tls, Tls11, Tls12'
   $webclient = New-Object System.Net.WebClient
   Write-Output "Downloading $url to $destination..."
   $webclient.DownloadFile($url, $destination)
@@ -74,13 +73,10 @@ New-Item -type directory -force -path $bundle_dir, $docs_dir, $bin_dir, $plugins
 Write-Output "Grabbing the files we need..."
 
 # Lando things
-Copy-Item "dist\cli\lando-win32-x64-v$lando_version.exe" "$bin_dir\lando.exe" -force
-
-# Git
-Download -Url "https://github.com/git-for-windows/git/releases/download/v$git_version.windows.1/Git-$git_version-64-bit.exe" -Destination "$base_dir\Git.exe"
+Copy-Item "build\cli\lando-win32-x64-v$lando_version.exe" "$bin_dir\lando.exe" -force
 
 # Docker for Windows
-Download -Url "https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe" -Destination "$base_dir\Docker.exe"
+Download -Url "https://download.docker.com/win/stable/$docker_version/Docker%20for%20Windows%20Installer.exe" -Destination "$base_dir\Docker.exe"
 
 # Copy over some other assets
 Write-Output "Copying over static assets..."

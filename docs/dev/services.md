@@ -1,7 +1,7 @@
 Services
 ========
 
-Services are the "atomic unit" of Lando. They are self-contained Docker containers that can be easily customized in the `.lando.yml` file and when combined together with other services, tooling and proxy config they can form [recipes](./recipes.md).
+Services are the "atomic unit" of Lando. They are self-contained Docker containers that can be easily customized in the `.lando.yml` file and when combined together with other services, tooling and proxy config can form [recipes](./recipes.md).
 
 On a more technical level a service will do the following:
 
@@ -12,7 +12,7 @@ On a more technical level a service will do the following:
 Loading Services
 ----------------
 
-You can load a service from any plugin with the `post-bootstrap` event. See [this](https://github.com/lando/lando/blob/master/plugins/lando-services/lib/bootstrap.js#L26) for how we load services from our core plugins.
+You can load a service from any plugin with the `post-bootstrap` event. See [this](https://github.com/lando/lando/blob/master/plugins/lando-services/index.js) for how we load services from our core plugins.
 
 ```js
 // Add particular services to lando
@@ -36,46 +36,40 @@ A services module (eg the file loaded with `lando.services.add`) needs to be mad
 *   `info` - A function that augments the info object to add additional metadata about your service.
 *   `configDir` - A path to a directory with any config files your service might require.
 
-A trivial `service` that is syntaxically correct but doesn't do anything would take this form:
+A trivial `service` that is syntactically correct but doesn't do anything would take this form:
 
 ```js
-/**
- * Trivial service
- *
- * @name myservice
- */
-
 'use strict';
 
 module.exports = function(lando) {
 
-  /**
+  /*
    * Supported versions for myservice
    */
   var versions = [];
 
-  /**
+  /*
    * Return the networks needed
    */
   var networks = function(name, config) {
     return {};
   };
 
-  /**
+  /*
    * Return the services needed
    */
   var services = function(name, config) {
     return {};
   };
 
-  /**
+  /*
    * Return the volumes needed
    */
   var volumes = function(name, config) {
     return {};
   };
 
-  /**
+  /*
    * Metadata about our service
    */
   var info = function(name, config) {
@@ -96,16 +90,15 @@ module.exports = function(lando) {
 
 ### versions
 
-The versions array is a list of the docker tags for the docker image you've chosen to use as the basis of your service. It is a common convention to add in two special tags `latest` and `custom`.  `latest` will need to be a valid docker tag (it usually exists by default). `custom` will tell Lando that the image is provided downstream in the [advanced service configuration](./../config/overrides.md).
+The versions array is a list of the docker tags for the docker image you've chosen to use as the basis of your service. We also add in a `custom` tag so you can override things with [advanced service configuration](./../config/advanced.md).
 
 ```js
-/**
+/*
  * Supported versions for apache
  */
 var versions = [
   '2.4',
   '2.2',
-  'latest',
   'custom'
 ];
 ```
@@ -115,7 +108,7 @@ var versions = [
 Networks is a function that should return an object of [docker compose networks](https://docs.docker.com/compose/compose-file/#network-configuration-reference). In almost all cases you can return an empty object.
 
 ```js
-/**
+/*
  * Return the networks needed
  */
 var networks = function(name, config) {
@@ -128,7 +121,7 @@ var networks = function(name, config) {
 Services is a function that returns an object of [docker composer services](https://docs.docker.com/compose/compose-file/#service-configuration-reference). Generally this is the most important part of the service module. It allows Lando to build a custom docker compose service definition based on the values specified in `config` which is taken from the user's `.lando.yml`.
 
 ```js
-/**
+/*
  * Build out apache
  */
 var services = function(name, config) {
@@ -205,7 +198,7 @@ Volumes is a function that returns an object of [docker compose volumes](https:/
 This example defines a `data` and `appserver` (the value of the `name` variable) volume that can be shared by other services.
 
 ```js
-/**
+/*
  * Return the volumes needed
  */
 var volumes = function(name, config) {
@@ -229,7 +222,7 @@ var volumes = function(name, config) {
 Info is a function that returns an object of additional metadata about your service. This is a great way to augment the info that is delivered via `lando info`.
 
 ```js
-/**
+/*
  * Metadata about our service
  */
 var info = function(name, config) {

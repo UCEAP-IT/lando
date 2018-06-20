@@ -64,6 +64,7 @@ And then mix in additional auxiliary services
 *   [postgres](http://docs.devwithlando.io/services/postgres.html)
 *   [redis](http://docs.devwithlando.io/services/redis.html)
 *   [solr](http://docs.devwithlando.io/services/solr.html)
+*   [tomcat](http://docs.devwithlando.io/services/tomcat.html)
 *   [varnish](http://docs.devwithlando.io/services/varnish.html)
 
 And then get some pro workflow dialed
@@ -94,8 +95,8 @@ And then dive deep into reference materials
 *   [Services](http://docs.devwithlando.io/config/services.html)
 *   [Tooling](http://docs.devwithlando.io/config/tooling.html)
 *   [CLI](http://docs.devwithlando.io/cli/usage.html)
-*   [Contributing](http://docs.devwithlando.io/dev/contributing.html)
-*   [API](http://docs.devwithlando.io/dev/api/lando.html)
+*   [Contributing](http://docs.devwithlando.io/contrib/contributing.html)
+*   [API](http://docs.devwithlando.io/dev/api/api.html)
 *   [Troubleshooting and Support](http://docs.devwithlando.io/troubleshooting/logs.html)
 *   [Examples](https://github.com/lando/lando/tree/master/examples)
 
@@ -120,6 +121,8 @@ lando init
 lando start
 ```
 
+Note: Lando will not spin up a new codebase for you unless you init with either the `pantheon` or `github` method (see below). Otherwise, remember to always have an already existing project to init from.
+
 #### 3. Or pull from GitHub or Pantheon
 
 ```bash
@@ -129,7 +132,7 @@ lando init pantheon | lando init github
 lando start
 ```
 
-You can also easily configure a `lando.yml` [recipe](http://docs.devwithlando.io/config/recipe.html)
+You can also easily configure a `lando.yml` [recipe](http://docs.devwithlando.io/config/recipes.html)
 
 ```yml
 name: myproject
@@ -164,10 +167,10 @@ services:
     type: node:6.10
     globals:
       grunt-cli: "latest"
-    build:
+    run:
       - cd /app && npm install --production
   appserver:
-    build:
+    run:
       - cd /app && composer install
   mailhog:
     type: mailhog
@@ -190,6 +193,13 @@ tooling:
     service: appserver
     cmd: ps
 ```
+
+Security Issues
+---------------
+
+If you have discovered a security issue with Lando, please contact the Lando Security Team directly at
+[security@devwithlando.io](mailto:security@devwithlando.io). We manage security issues separately in a private repository until the issue has been resolved. Even if you're not sure if it's a security problem, please contact the security team before filing an issue, blogging, or
+tweeting about it.
 
 Other Resources
 ---------------
